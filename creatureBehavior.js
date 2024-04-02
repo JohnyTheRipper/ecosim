@@ -1,30 +1,30 @@
-// Function to handle circle behavior based on ray interruptions
-function handleCircleBehavior(intersections) {
+// Function to handle creature behavior based on ray interruptions
+function handleCreatureBehavior(intersections) {
     if (intersections.length > 0) {
-        // If there are intersections, update circle properties
-        circle2.color = 'red'; // Change color to indicate intersection
+        // If there are intersections, update creature properties
+        creature2.color = 'red'; // Change color to indicate intersection
         
-        // Move circle1 towards circle2
-        const dx = circle2.x - circle1.x;
-        const dy = circle2.y - circle1.y;
+        // Move creature1 towards creature2
+        const dx = creature2.x - creature1.x;
+        const dy = creature2.y - creature1.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
         const speed = 2; // Adjust the speed as needed
         const moveX = (dx / distance) * speed;
         const moveY = (dy / distance) * speed;
         
-        // Update circle1 position
-        circle1.x += moveX;
-        circle1.y += moveY;
+        // Update creature1 position
+        creature1.x += moveX;
+        creature1.y += moveY;
     } else {
-        // If no intersections, reset circle properties
-        circle2.color = 'white'; // Reset color
+        // If no intersections, reset creature properties
+        creature2.color = 'white'; // Reset color
         // Reset any other properties as needed
     }
 }
 
-// Function to calculate intersection points between a line and a circle
-function intersectCircle(x1, y1, x2, y2, cx, cy, radius) {
+// Function to calculate intersection points between a line and a creature
+function intersectCreature(x1, y1, x2, y2, cx, cy, radius) {
     const dx = x2 - x1;
     const dy = y2 - y1;
     const a = dx * dx + dy * dy;
