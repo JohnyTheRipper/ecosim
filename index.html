@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ray Tracing Canvas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div id="controls">
+        <label for="rayLength">Ray Length:</label>
+        <input type="range" id="rayLength" min="1" max="100" value="50">
+        <br>
+        <label for="amountOfRays">Amount of Rays:</label>
+        <input type="range" id="amountOfRays" min="1" max="360" value="72">
+        <br>
+        <label for="totalDegrees">Total Degrees:</label>
+        <input type="range" id="totalDegrees" min="90" max="360" value="180">
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
