@@ -16,6 +16,10 @@ function handleCreatureBehavior(intersections) {
         // Update creature1 position
         creature1.x += moveX;
         creature1.y += moveY;
+
+        // Update the direction of rays towards creature2
+        const angleTowardsCreature2 = Math.atan2(dy, dx);
+        creature1.rayDirection = angleTowardsCreature2;
     } else {
         // If no intersections, reset creature properties
         creature2.color = 'white'; // Reset color
