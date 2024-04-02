@@ -45,7 +45,8 @@
             y: canvas.height / 2,
             radius: 15,
             color: 'white',
-            health: 100
+            health: 100,
+            distances: []
         };
 
         let circle2 = {
@@ -53,7 +54,8 @@
             y: canvas.height / 4,
             radius: 15,
             color: 'white',
-            health: 100
+            health: 100,
+            distances: []
         };
 
         // Define array to store circles and walls
@@ -103,6 +105,11 @@
             // Calculate the angle step
             const angleStep = (endAngle - startAngle) / (numRays - 1);
 
+            // Reset distances array for each circle
+            for (let obstacle of obstacles) {
+                obstacle.distances = [];
+            }
+
             // Draw ray tracing lines at specified intervals
             for (let i = 0; i < numRays; i++) {
                 // Calculate the angle for this ray
@@ -120,7 +127,7 @@
                         intersections.push(...obstacleIntersections);
                     }
                 }
-                
+
                 if (intersections.length > 0) {
                     // If intersection occurs, set end point to first intersection point
                     ctx.beginPath();
@@ -128,6 +135,11 @@
                     ctx.lineTo(intersections[0].x, intersections[0].y);
                     ctx.strokeStyle = 'white';
                     ctx.stroke();
+
+                    // Calculate distance to the intersected obstacle and store it
+                    const distance = Math.sqrt(Math.pow(intersections[0].x - circle1.x, 2) + Math.pow(intersections[0].y - circle1.y, 2));
+                    const obstacleIndex = intersections[0].index;
+                    circle1.distances[obstacleIndex] = distance;
                 } else {
                     // Draw the line
                     ctx.beginPath();
@@ -136,6 +148,31 @@
                     ctx.strokeStyle = 'white';
                     ctx.stroke();
                 }
+            }
+
+            // Check if circle2 is within any of the rays
+            let isWithinRay = false;
+            for (let i = 0; i < numRays; i++) {
+                const angle = startAngle + i * angleStep;
+                const endX = circle1.x + lineLength * Math.cos(angle);
+                const endY = circle1.y + lineLength * Math.sin(angle);
+                const intersections = intersectCircle(circle1.x, circle1.y, endX, endY, circle2.x, circle2.y, circle2.radius);
+                if (intersections.length > 0) {
+                    isWithinRay = true;
+                    break;
+                }
+            }
+
+            // Move towards circle2 if it is within the rays
+            if (isWithinRay) {
+                const dx = circle2.x - circle1.x;
+                const dy = circle2.y - circle1.y;
+                const angleToTarget = Math.atan2(dy, dx);
+                const speed = 2; // Adjust as needed
+                const dxMove = speed * Math.cos(angleToTarget);
+                const dyMove = speed * Math.sin(angleToTarget);
+                circle1.x += dxMove;
+                circle1.y += dyMove;
             }
         }
 
@@ -161,10 +198,10 @@
 
             const intersections = [];
             if (t1 >= 0 && t1 <= 1) {
-                intersections.push({ x: x1 + t1 * dx, y: y1 + t1 * dy });
+                intersections.push({ x: x1 + t1 * dx, y: y1 + t1 * dy, index: obstacles.indexOf(circle2) });
             }
             if (t2 >= 0 && t2 <= 1) {
-                intersections.push({ x: x1 + t2 * dx, y: y1 + t2 * dy });
+                intersections.push({ x: x1 + t2 * dx, y: y1 + t2 * dy, index: obstacles.indexOf(circle2) });
             }
 
             return intersections;
