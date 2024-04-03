@@ -1,56 +1,68 @@
-// Function to handle creature behavior based on ray interruptions
-function handleCreatureBehavior(intersections) {
-    if (intersections.length > 0) {
-        // If there are intersections, update creature properties
-        creature2.color = 'red'; // Change color to indicate intersection
-        
-        // Move creature1 towards creature2
-        const dx = creature2.x - creature1.x;
-        const dy = creature2.y - creature1.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        const speed = 2; // Adjust the speed as needed
-        const moveX = (dx / distance) * speed;
-        const moveY = (dy / distance) * speed;
-        
-        // Update creature1 position
-        creature1.x += moveX;
-        creature1.y += moveY;
+// Import necessary modules
+import * as Matter from 'matter-js';
+import * as Three from 'three';
 
-        // Update the direction of rays towards creature2
-        const angleTowardsCreature2 = Math.atan2(dy, dx);
-        creature1.rayDirection = angleTowardsCreature2;
-    } else {
-        // If no intersections, reset creature properties
-        creature2.color = 'white'; // Reset color
-        // Reset any other properties as needed
-    }
+// Define factory function for creating creatures
+function createCreature(x, y, radius, color) {
+    return {
+        x: x,
+        y: y,
+        radius: radius,
+        color: color,
+        // Method to move the creature
+        move(x, y) {
+            this.x += x;
+            this.y += y;
+        }
+    };
 }
 
-// Function to calculate intersection points between a line and a creature
-function intersectCreature(x1, y1, x2, y2, cx, cy, radius) {
-    const dx = x2 - x1;
-    const dy = y2 - y1;
-    const a = dx * dx + dy * dy;
-    const b = 2 * (dx * (x1 - cx) + dy * (y1 - cy));
-    const c = (x1 - cx) * (x1 - cx) + (y1 - cy) * (y1 - cy) - radius * radius;
-    const discriminant = b * b - 4 * a * c;
-
-    if (discriminant < 0) {
-        // No intersection
-        return [];
-    }
-
-    const t1 = (-b + Math.sqrt(discriminant)) / (2 * a);
-    const t2 = (-b - Math.sqrt(discriminant)) / (2 * a);
-
-    const intersections = [];
-    if (t1 >= 0 && t1 <= 1) {
-        intersections.push({ x: x1 + t1 * dx, y: y1 + t1 * dy });
-    }
-    if (t2 >= 0 && t2 <= 1) {
-        intersections.push({ x: x1 + t2 * dx, y: y1 + t2 * dy });
-    }
-
-    return intersections;
+// Define function for collision detection using Matter.js
+function detectCollisions(creatures) {
+    // Create engine
+    const engine = Matter.Engine.create();
+    // Create bodies for creatures
+    const bodies = creatures.map(creature => {
+        return Matter.Bodies.circle(creature.x, creature.y, creature.radius);
+    });
+    // Add bodies to engine
+    Matter.World.add(engine.world, bodies);
+    // Detect collisions
+    Matter.Events.on(engine, 'collisionStart', event => {
+        event.pairs.forEach(pair => {
+            // Handle collision between creatures
+            // Add collision handling logic here
+        });
+    });
 }
+
+// Define function for rendering creatures using Three.js
+function renderCreatures(creatures) {
+    // Create scene
+    const scene = new Three.Scene();
+    // Create camera
+    const camera = new Three.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    // Create renderer
+    const renderer = new Three.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    // Create spheres for creatures
+    creatures.forEach(creature => {
+        const geometry = new Three.SphereGeometry(creature.radius, 32, 32);
+        const material = new Three.MeshBasicMaterial({ color: creature.color });
+        const sphere = new Three.Mesh(geometry, material);
+        sphere.position.set(creature.x, creature.y, 0);
+        scene.add(sphere);
+    });
+    // Update camera position
+    camera.position.z = 5;
+    // Render scene
+    function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+    }
+    animate();
+}
+
+// Export factory function and collision detection function
+export { createCreature, detectCollisions, renderCreatures };

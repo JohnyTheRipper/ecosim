@@ -4,37 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ray Tracing</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: black;
-            text-align: center;
-        }
-        canvas {
-            display: block;
-            margin: auto;
-            border: 1px solid white;
-        }
-        #controls {
-            margin-top: 20px;
-        }
-    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Metadata for SEO -->
+    <meta name="description" content="Ray Tracing Simulation">
+    <meta name="keywords" content="ray tracing, simulation, web development">
+    <!-- Favicon and Touch Icon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="touch-icon.png">
 </head>
 <body>
-    <canvas id="canvas" width="500" height="500"></canvas>
-    <div id="controls">
-        <label for="lineLength">Line Length:</label>
-        <input type="range" id="lineLength" min="50" max="400" value="200">
-        <br>
-        <label for="numRays">Number of Rays:</label>
-        <input type="range" id="numRays" min="5" max="50" value="10">
-        <br>
-        <label for="totalDegrees">Total Degrees:</label>
-        <input type="range" id="totalDegrees" min="30" max="180" value="90">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Ray Tracing Simulation</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <!-- Canvas for rendering simulation -->
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <!-- Controls for simulation parameters -->
+                <div id="controls">
+                    <label for="lineLength">Line Length:</label>
+                    <input type="range" id="lineLength" min="50" max="400" value="200">
+                    <br>
+                    <label for="numRays">Number of Rays:</label>
+                    <input type="range" id="numRays" min="5" max="50" value="10">
+                    <br>
+                    <label for="totalDegrees">Total Degrees:</label>
+                    <input type="range" id="totalDegrees" min="30" max="180" value="90">
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script src="creatureBehavior.js"></script>
-    <script src="index.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Webpack Bundle -->
+    <script src="bundle.js"></script>
 </body>
 </html>
