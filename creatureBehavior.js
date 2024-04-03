@@ -52,6 +52,10 @@ function handleCreatureBehavior(intersections) {
         // If no intersections, reset creature properties
         creature2.color = 'white'; // Reset color
         // Reset any other properties as needed
+
+        // Allow creature1 to turn freely
+        const turningSpeed = 0.05; // Adjust as needed
+        creature1.rayDirection += turningSpeed * elapsedTime;
     }
 }
 
